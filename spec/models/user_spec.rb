@@ -22,10 +22,16 @@ RSpec.describe User, type: :model do
   # TODO: Add tests for validations
 
   describe '#send_password_reset_email' do
-    # TODO
+    let(:self) { { } }
+    
+    it "send_password_reset_email" do
+      expect {
+        UserMailer.account_activation(self).deliver_now
+      }.to change { ActionMailer::Base.deliveries.count }.by(1)
+    end
   end
 
   describe '#feed' do
-    # TODO
-  en
+    # expect().to eq ()
+  end
 end
