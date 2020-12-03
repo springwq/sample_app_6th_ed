@@ -74,7 +74,15 @@ RSpec.describe "Users", type: :request do
   end
 
   descibe '#show' do
-    # TODO
+    let!(:user) { create(:user, activated: true, activated_at: Time.zone.now) }
+
+    context 'user show' do
+      before do
+        get :show, params: { page: "test" }
+      end
+
+      it { assigns(:microposts).should eq(user.microposts.paginate('test')) }
+    end
   end
 
   descirbe '#create' do
