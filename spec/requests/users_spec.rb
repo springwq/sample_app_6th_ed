@@ -72,4 +72,55 @@ RSpec.describe "Users", type: :request do
       end
     end
   end
+
+  descibe '#show' do
+
+      context 'when user is signned in' do
+        subject { get users_path }
+
+        before do
+          @user = create(:user, activated: true, activated_at: Time.zone.now)
+          sign_in_as(@user)
+          get :show, params: { id: @user.id }
+        end
+
+        it 'render show template' do
+          expect(response).to be_successful
+        end
+  
+  end
+
+  descirbe '#create' do
+    # TODO
+  end
+
+  describe '#destroy' do
+
+  context 'when user is signned in' do
+    subject { get users_path }
+
+    before do
+      @user = create(:user, activated: true, activated_at: Time.zone.now)
+      sign_in_as(@user)
+      get :destroy, params: { id: @user.id }
+    end
+
+    it 'delete the user' do
+      expect(flash[:success]).to have_content('User deleted')
+      expect(response).to redirect_to(users_url)
+    end
+ 
+  end
+
+  describe '#following' do
+
+  context 'when user is signned in' do
+    subject { get users_path }
+
+    before do
+      @user = create(:user, activated: true, activated_at: Time.zone.now)
+      sign_in_as(@user)
+    end
+
+  end
 end
