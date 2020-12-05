@@ -73,11 +73,29 @@ RSpec.describe "Users", type: :request do
     end
   end
 
-  descibe '#show' do
-    # TODO
+  describe '#show' do
+     context 'when user is signned in' do
+       
+      before do
+        @user = create(:user, activated: true, activated_at: Time.zone.now)
+      end
+
+      subject { get user_path(id: @user.id) }
+
+      it "retunrs a 200 response" do
+        sign_in_as(@user)
+        subject
+        expect(response).to have_http_status(200)
+      end
+
+      it 'render show template' do
+        sign_in_as(@user)
+        expect(subject).to render_template(:show)
+      end
+    end
   end
 
-  descirbe '#create' do
+  describe '#create' do
     # TODO
   end
 

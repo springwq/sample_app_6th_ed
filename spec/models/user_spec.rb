@@ -22,16 +22,24 @@ RSpec.describe User, type: :model do
   # TODO: Add tests for validations
 
   describe '#send_password_reset_email' do
-    let(:self) { { } }
+    let(:user) { User.new(name: "circle", email: "circle@feedmob.com", password: "123456") }
     
-    it "send_password_reset_email" do
-      expect {
-        UserMailer.account_activation(self).deliver_now
-      }.to change { ActionMailer::Base.deliveries.count }.by(1)
+    it "send password reset email" do
+      allow(UserMailer).to receive(:password_reset)
+      result = user.save
+      expect(result).to eq(true)
     end
   end
 
   describe '#feed' do
-    # expect().to eq ()
+    let(:user) { create(:user) }
+    
+    it 'should equal 0' do 
+      expect(user.feed.size).to eq(0)
+    end
+    
+    context "micopost " do
+      
+    end
   end
 end
