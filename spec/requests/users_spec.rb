@@ -150,8 +150,8 @@ RSpec.describe "Users", type: :request do
     it 'should be successful' do 
       sign_in_as(user)
       get following_user_path(user)
-      expect(assigns(:users).size).to  eq(1)
-      expect(response).to  render_template "show_follow"
+      expect(assigns(:users).size).to eq(1)
+      expect(response).to render_template "show_follow"
     end
 
   end
