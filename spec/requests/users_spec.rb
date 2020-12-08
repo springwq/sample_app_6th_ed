@@ -68,8 +68,8 @@ RSpec.describe "Users", type: :request do
   end
 
   describe '#show' do
+    let(:user) { create(:user, activated: true, activated_at: Time.zone.now) }
     before do
-      user = create(:user, activated: true, activated_at: Time.zone.now)
       @micropost = create(:micropost, user_id: user.id, content: "test1")
     end
 
@@ -146,7 +146,5 @@ RSpec.describe "Users", type: :request do
       expect(assigns(:users).size).to eq(1)
       expect(response).to render_template "show_follow"
     end
-
   end
-  
 end
