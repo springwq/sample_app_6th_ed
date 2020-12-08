@@ -17,3 +17,6 @@ RSpec/MultipleExpectations:
 
 Metrics/BlockLength:
   Enabled: false
+  
+Layout/LineLength: 
+  Enabled: false

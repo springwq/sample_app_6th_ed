@@ -68,20 +68,21 @@ RSpec.describe "Users", type: :request do
   end
 
   describe '#show' do
-    
     before do
-      @user = create(:user, activated: true, activated_at: Time.zone.now)
-      @micropost = create(:micropost, user_id: @user.id, content: "test1")
+      user = create(:user, activated: true, activated_at: Time.zone.now)
+      @micropost = create(:micropost, user_id: user.id, content: "test1")
     end
 
-    subject { get users_path(@user) }
-    it 'should get user success' do 
-      sign_in_as(@user)
+    subject { get users_path(user) }
+
+    it 'get user success' do
+      sign_in_as(user)
+
       subject
-      expect(response).to have_http_status(200)
-      expect(@user.microposts.reload.size).to eq(1)
+
+      expect(response).to have_http_status(:ok)
+      expect(user.microposts.reload.size).to eq(1)
     end
-    
   end
 
   describe '#create' do
@@ -92,20 +93,20 @@ RSpec.describe "Users", type: :request do
         password: "test123456"
       }
     }
-    let(:invalid_user_params){
+    let(:invalid_user_params) {
       {
         name: "test_name",
         password: "test123456"
       }
     }
 
-    it 'should save user' do 
+    it 'save user' do 
       post users_path, params: { user: user_params }
       expect(flash[:info]).to eq("Please check your email to activate your account.")
-      expect(response).to have_http_status(302)
+      expect(response).to have_http_status(:found)
     end
 
-    it 'should render new' do 
+    it 'render new' do 
       post users_path, params: { user: invalid_user_params }
       expect(response).to render_template :new
     end
@@ -115,22 +116,20 @@ RSpec.describe "Users", type: :request do
     let(:test_user) { create(:user, activated: true, activated_at: Time.zone.now) }
     let(:admin_user) { create(:user, activated: true, admin: true, activated_at: Time.zone.now) }
 
-    subject { delete user_path(test_user)  }
-
-    it 'should redirect to login ' do 
-      subject
-      expect(subject).to redirect_to login_path
+    it 'redirect to login ' do 
+      delete user_path(test_user)
+      expect(response).to redirect_to login_path
     end
 
-    it 'should redirect to root_path ' do 
+    it 'redirect to root_path ' do 
       sign_in_as(test_user)
-      subject
-      expect(subject).to redirect_to root_path
+      delete user_path(test_user)
+      expect(response).to redirect_to root_path
     end
 
-    it 'should return success' do 
+    it 'return success' do 
       sign_in_as(admin_user)
-      subject
+      delete user_path(test_user)
       expect(flash[:success]).to eq("User deleted")
       expect(subject).to redirect_to users_url
     end
@@ -141,7 +140,7 @@ RSpec.describe "Users", type: :request do
     let(:user_1) { create(:user, activated: true, activated_at: Time.zone.now) }
     let!(:relationship) { create(:relationship, follower_id: user.id, followed_id: user_1.id) }
 
-    it 'should be successful' do 
+    it 'be successful' do 
       sign_in_as(user)
       get following_user_path(user)
       expect(assigns(:users).size).to eq(1)

@@ -18,61 +18,66 @@ RSpec.describe User, type: :model do
   end
 
   describe '#send_password_reset_email' do
-    let(:user) { User.new(email: Faker::Internet.email, password: SecureRandom.hex(4), name: Faker::Name.name) }
-
-    it 'should send email' do 
+    let(:user) { described_class.new(email: Faker::Internet.email, password: SecureRandom.hex(4), name: Faker::Name.name) }
+    
+    it 'save success' do
       allow(UserMailer).to receive_message_chain(:password_reset, :deliver_now)
       result = user.save
       expect(result).to be true
     end
-
   end
 
   describe "#validates" do
-    context 'validates nil name' do 
-      let(:user) { User.new(email: Faker::Internet.email, password: SecureRandom.hex(4), name: "") }
-      it 'should return errors' do 
+    context 'with validates nil name' do
+      let(:user) { described_class.new(email: Faker::Internet.email, password: SecureRandom.hex(4), name: "") }
+
+      it 'return errors' do
         result = user.save
         expect(result).to be false
       end
     end
 
-    context 'validates too long name' do 
-      let(:user) { User.new(email: Faker::Internet.email, password: SecureRandom.hex(4), name: SecureRandom.hex(30)) }
-      it 'should return errors' do 
+    context 'with validates too long name' do
+      let(:user) { described_class.new(email: Faker::Internet.email, password: SecureRandom.hex(4), name: SecureRandom.hex(30)) }
+
+      it 'return errors' do
         result = user.save
         expect(result).to be false
       end
     end
 
-    context 'validates valid name' do 
-      let(:user) { User.new(email: Faker::Internet.email, password: SecureRandom.hex(4), name: SecureRandom.hex(3)) }
-      it 'should be success' do 
+    context 'with validates valid name' do
+      let(:user) { described_class.new(email: Faker::Internet.email, password: SecureRandom.hex(4), name: SecureRandom.hex(3)) }
+
+      it 'save to be success' do
         result = user.save
         expect(result).to be true
       end
     end
 
-    context 'validates invalid email' do 
-      let(:user) { User.new(email: "test_email", password: SecureRandom.hex(4), name: SecureRandom.hex(3)) }
-      it 'should return errors' do 
+    context 'with validates invalid email' do
+      let(:user) { described_class.new(email: "test_email", password: SecureRandom.hex(4), name: SecureRandom.hex(3)) }
+
+      it 'return errors' do
         result = user.save
         expect(result).to be false
       end
     end
 
-    context 'validates nil email' do 
-      let(:user) { User.new(email: "", password: SecureRandom.hex(4), name: SecureRandom.hex(3)) }
-      it 'should return errors' do 
+    context 'with validates nil email' do
+      let(:user) { described_class.new(email: "", password: SecureRandom.hex(4), name: SecureRandom.hex(3)) }
+
+      it 'return errors' do
         result = user.save
         expect(result).to be false
       end
     end
 
-    context 'validates exists email' do 
+    context 'with validates exists email' do
       let!(:user) { create(:user, email: "test_email@126.com") }
-      let(:new_user) { User.new(email: "test_email@126.com", password: SecureRandom.hex(4), name: SecureRandom.hex(3)) }
-      it 'should return errors' do 
+      let(:new_user) { described_class.new(email: "test_email@126.com", password: SecureRandom.hex(4), name: SecureRandom.hex(3)) }
+
+      it 'return errors' do
         result = new_user.save
         expect(result).to be false
       end
@@ -80,37 +85,39 @@ RSpec.describe User, type: :model do
   end
 
   describe User do
-    it {  should respond_to(:microposts) }
-    it {  should respond_to(:active_relationships) }
-    it {  should respond_to(:passive_relationships) }
-    it {  should respond_to(:following) }
-    it {  should respond_to(:followers) }
+    it {  is_expected.to respond_to(:microposts) }
+    it {  is_expected.to respond_to(:active_relationships) }
+    it {  is_expected.to respond_to(:passive_relationships) }
+    it {  is_expected.to respond_to(:following) }
+    it {  is_expected.to respond_to(:followers) }
   end
-  
+
   describe '#feed' do
     let(:user) { create(:user) }
 
-    it 'should return nil' do 
+    it 'return nil' do
       expect(user.feed.size).to equal(0)
     end
 
-    context "user create micopost" do
+    context "when user create micopost" do
       let!(:user) { create(:user) }
-      let!(:user_1) { create(:user) }
-      let!(:user_2) { create(:user) }
-      let!(:relationship) { create(:relationship, follower_id: user.id, followed_id: user_1.id) }
-      let!(:micropost) { create(:micropost,user_id: user.id, content: "test" ) }
-      let!(:micropost_1) { create(:micropost,user_id: user_1.id, content: "test1" ) }
-      let!(:micropost_2) { create(:micropost,user_id: user_2.id, content: "test1" ) }
+      let!(:user_a) { create(:user) }
+      let!(:user_b) { create(:user) }
 
-      it 'should get two feed' do 
+      before do
+        create(:relationship, follower_id: user.id, followed_id: user_a.id)
+        create(:micropost, user_id: user.id, content: "test")
+        create(:micropost, user_id: user_a.id, content: "test1")
+        create(:micropost, user_id: user_b.id, content: "test1")
+      end
+
+      it 'get two feed' do
         expect(user.feed.size).to equal(2)
       end
 
-      it 'should get one feed' do 
-        expect(user_2.feed.size).to equal(1)
-      end
-      
+      it 'get one feed' do
+        expect(user_b.feed.size).to equal(1)
+      end      
     end
   end
 end
