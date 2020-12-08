@@ -100,13 +100,13 @@ RSpec.describe "Users", type: :request do
       }
     }
 
-    it 'save user' do 
+    it 'save user' do
       post users_path, params: { user: user_params }
       expect(flash[:info]).to eq("Please check your email to activate your account.")
       expect(response).to have_http_status(:found)
     end
 
-    it 'render new' do 
+    it 'render new' do
       post users_path, params: { user: invalid_user_params }
       expect(response).to render_template :new
     end
@@ -116,18 +116,18 @@ RSpec.describe "Users", type: :request do
     let(:test_user) { create(:user, activated: true, activated_at: Time.zone.now) }
     let(:admin_user) { create(:user, activated: true, admin: true, activated_at: Time.zone.now) }
 
-    it 'redirect to login ' do 
+    it 'redirect to login ' do
       delete user_path(test_user)
       expect(response).to redirect_to login_path
     end
 
-    it 'redirect to root_path ' do 
+    it 'redirect to root_path ' do
       sign_in_as(test_user)
       delete user_path(test_user)
       expect(response).to redirect_to root_path
     end
 
-    it 'return success' do 
+    it 'return success' do
       sign_in_as(admin_user)
       delete user_path(test_user)
       expect(flash[:success]).to eq("User deleted")
@@ -140,7 +140,7 @@ RSpec.describe "Users", type: :request do
     let(:user_1) { create(:user, activated: true, activated_at: Time.zone.now) }
     let!(:relationship) { create(:relationship, follower_id: user.id, followed_id: user_1.id) }
 
-    it 'be successful' do 
+    it 'be successful' do
       sign_in_as(user)
       get following_user_path(user)
       expect(assigns(:users).size).to eq(1)
