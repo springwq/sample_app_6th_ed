@@ -6,13 +6,13 @@ RSpec.describe User, type: :model do
   end
 
   context 'when name is not present' do
-    let(:user) {  User.new(email: Faker::Internet.email, password: User.digest('password')) }
+    let(:user) { described_class.new(email: Faker::Internet.email, password: described_class.digest('password')) }
 
-    it 'should not be valid' do
+    it 'is inivalid' do
       expect(user.valid?).to be false
     end
 
-    it 'should not save' do
+    it 'is failed to save' do
       expect(user.save).to be false
     end
   end

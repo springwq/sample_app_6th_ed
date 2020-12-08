@@ -1,7 +1,7 @@
 require 'rails_helper'
 
-RSpec.feature "Users", type: :feature do
-  scenario 'visit all users list' do
+RSpec.describe 'Users', type: :feature do
+  it 'visit all users list' do
     user = create(:user, activated: true, activated_at: Time.zone.now)
 
     visit root_path
