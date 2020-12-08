@@ -1,6 +1,6 @@
 require 'rails_helper'
 
-RSpec.describe "Users", type: :feature do
+RSpec.describe 'Users', type: :feature do
   it 'visit all users list' do
     user = create(:user, activated: true, activated_at: Time.zone.now)
 

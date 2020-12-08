@@ -4,19 +4,16 @@ RSpec.describe "Users", type: :request do
   describe "#index" do
     context 'when user is signned in' do
       subject { get users_path }
-
-      before do
-        @user = create(:user, activated: true, activated_at: Time.zone.now)
-      end
+      let(:user) { create(:user, activated: true, activated_at: Time.zone.now) }
 
       it 'retunrs a 200 response' do
-        sign_in_as(@user)
+        sign_in_as(user)
         subject
         expect(response).to have_http_status(200)
       end
 
       it 'render index template' do
-        sign_in_as(@user)
+        sign_in_as(user)
         expect(subject).to render_template(:index)
       end
     end
@@ -37,20 +34,18 @@ RSpec.describe "Users", type: :request do
 
   describe "#edit" do
     context 'when user is signned in' do
-      before do
-        @user = create(:user, activated: true, activated_at: Time.zone.now)
-      end
+      let(:user) { create(:user, activated: true, activated_at: Time.zone.now) }
 
-      subject { get edit_user_path(@user) }
+      subject { get edit_user_path(user) }
 
       it 'retunrs a 200 response' do
-        sign_in_as(@user)
+        sign_in_as(user)
         subject
-        expect(response).to have_http_status(200)
+        expect(response).to have_http_status(:ok)
       end
 
       it 'render edit template' do
-        sign_in_as(@user)
+        sign_in_as(user)
         expect(subject).to render_template(:edit)
       end
     end
@@ -60,15 +55,15 @@ RSpec.describe "Users", type: :request do
         @user = create(:user, activated: true, activated_at: Time.zone.now)
       end
 
-      subject { get edit_user_path(@user) }
+      subject(:edit_user) { get edit_user_path(@user) }
 
       it 'returns a 302 response' do
-        subject
-        expect(response).to have_http_status(302)
+        edit_user
+        expect(response).to have_http_status(:found)
       end
 
       it 'render index template' do
-        expect(subject).to redirect_to(login_url)
+        expect(edit_user).to redirect_to(login_url)
       end
     end
   end
