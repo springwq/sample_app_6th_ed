@@ -66,4 +66,62 @@ RSpec.describe "Users", type: :request do
       end
     end
   end
+
+  describe "#show" do
+    context 'when user is signned in' do
+      before do
+        @user = create(:test_user)
+        sign_in_as(@user)
+      end
+        
+      subject { get user_path(id: @user.id) }
+
+      it "retunrs a 200 response" do
+        subject
+        expect(response).to have_http_status(200)
+      end
+
+      it 'render show template' do
+        expect(subject).to render_template(:show)
+      end
+    end
+  end
+
+  describe "#create" do
+      let(:user_params) { attributes_for(:test_user) }
+      
+      it "should save user" do
+        post users_path, params: { user: user_params }
+        expect(response).to redirect_to root_url
+      end
+
+      it "should render new" do
+        post users_path, params: { user: {name: 'test'} }
+        expect(response).to render_template :new
+      end
+  end
+
+  describe '#destroy' do
+    let(:admin) { create(:test_user, admin: true) }
+    let(:user) { create(:test_user) }
+    
+    it 'should return success' do 
+      sign_in_as(admin)
+      delete user_path(user)
+      expect(response).to redirect_to users_url
+    end
+  end
+
+  describe '#following' do
+    let(:users) { create_list(:test_user, 2) }
+    let(:relationship) { create(:relationship, follower_id: users.first.id, followed_id: users.last.id) }
+    
+    it 'should return success' do 
+      user = users.first
+      sign_in_as(user)
+      get following_user_path(user)
+      expect(assigns(:users).any?).to eq true
+      expect(response).to render_template :show_follow
+    end
+  end
 end
