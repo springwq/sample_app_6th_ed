@@ -23,3 +23,9 @@ Bundler/OrderedGems:
 
 Style/Documentation:
   Enabled: false
+
+Style/SymbolArray:
+  Enabled: false
+
+Layout/ExtraSpacing:
+  Enabled: false
