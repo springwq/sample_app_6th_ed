@@ -18,7 +18,7 @@ gem 'jbuilder',                   '2.10.0'
 gem 'bootsnap',                   '1.4.6', require: false
 gem 'rubocop',                    '1.5.2', require: false
 gem 'rubocop-rspec',              '2.0.1', require: false
-gem 'pg',                         '1.2.3'
+gem 'pg',                         '0.21.0'
 gem "figaro",                     '1.2.0'
 
 group :development, :test do
