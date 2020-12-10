@@ -16,4 +16,16 @@ RSpec.describe User, type: :model do
       expect(user.save).to be false
     end
   end
+
+  describe "#validates" do
+
+    context 'validates nil name' do 
+      let(:user_nil_name) { User.new(name: 'test_name', password: 'test_password', email: 'test_email@test.com') }
+
+      it 'should return false with nil name' do 
+        result = user_nil_name.save
+        expect(result).to be false
+      end
+    end
+  end
 end
