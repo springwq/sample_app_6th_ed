@@ -23,3 +23,15 @@ Layout/LineLength:
 
 RSpec/MessageChain: 
   Enabled: false
+
+Bundler/OrderedGems:
+  Enabled: false
+
+Style/Documentation:
+  Enabled: false
+
+Style/SymbolArray:
+  Enabled: false
+
+Layout/ExtraSpacing:
+  Enabled: false
