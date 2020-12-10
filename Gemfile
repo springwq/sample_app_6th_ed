@@ -18,10 +18,11 @@ gem 'jbuilder',                   '2.10.0'
 gem 'bootsnap',                   '1.4.6', require: false
 gem 'rubocop',                    '1.5.2', require: false
 gem 'rubocop-rspec',              '2.0.1', require: false
+gem 'pg',                         '0.21.0'
+gem "figaro",                     '1.2.0'
 
 group :development, :test do
-  gem 'sqlite3',            '1.4.2'
-  gem 'byebug',             '11.1.3', platforms: [:mri, :mingw, :x64_mingw]
+  gem 'byebug',            '11.1.3', platforms: [:mri, :mingw, :x64_mingw]
   gem 'pry-rails'
   gem 'rspec-rails',       '~> 4.0.1'
   gem 'factory_bot_rails', '~> 6.1.0'
@@ -46,10 +47,11 @@ group :test do
   gem 'cucumber-rails',           '2.2.0', require: false
   gem 'database_cleaner-active_record', '1.8.0'
   gem 'launchy',                  '2.5.0'
+  gem 'shoulda-matchers',         '4.4.1'
+  gem 'rspec_junit_formatter',    '0.4.1'
 end
 
 group :production do
-  gem 'pg',         '1.2.3'
   gem 'aws-sdk-s3', '1.46.0', require: false
 end
 
