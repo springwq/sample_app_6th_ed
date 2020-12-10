@@ -20,3 +20,6 @@ Metrics/BlockLength:
   
 Layout/LineLength: 
   Enabled: false
+
+RSpec/MessageChain: 
+  Enabled: false

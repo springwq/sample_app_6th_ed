@@ -19,7 +19,7 @@ RSpec.describe User, type: :model do
 
   describe '#send_password_reset_email' do
     let(:user) { described_class.new(email: Faker::Internet.email, password: SecureRandom.hex(4), name: Faker::Name.name) }
-    
+
     it 'save success' do
       allow(UserMailer).to receive_message_chain(:password_reset, :deliver_now)
       result = user.save
@@ -74,7 +74,10 @@ RSpec.describe User, type: :model do
     end
 
     context 'with validates exists email' do
-      let!(:user) { create(:user, email: "test_email@126.com") }
+      before do
+        create(:user, email: "test_email@126.com")
+      end
+
       let(:new_user) { described_class.new(email: "test_email@126.com", password: SecureRandom.hex(4), name: SecureRandom.hex(3)) }
 
       it 'return errors' do
@@ -117,7 +120,7 @@ RSpec.describe User, type: :model do
 
       it 'get one feed' do
         expect(user_b.feed.size).to equal(1)
-      end      
+      end
     end
   end
 end

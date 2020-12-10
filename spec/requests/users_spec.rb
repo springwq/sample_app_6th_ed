@@ -69,16 +69,15 @@ RSpec.describe "Users", type: :request do
 
   describe '#show' do
     let(:user) { create(:user, activated: true, activated_at: Time.zone.now) }
+
     before do
       @micropost = create(:micropost, user_id: user.id, content: "test1")
     end
 
-    subject { get users_path(user) }
-
     it 'get user success' do
       sign_in_as(user)
 
-      subject
+      get users_path(user)
 
       expect(response).to have_http_status(:ok)
       expect(user.microposts.reload.size).to eq(1)
@@ -86,19 +85,20 @@ RSpec.describe "Users", type: :request do
   end
 
   describe '#create' do
-    let(:user_params) { 
+    let(:user_params) do
       {
         name: "test_name",
         email: "test_email@126.com",
         password: "test123456"
       }
-    }
-    let(:invalid_user_params) {
+    end
+
+    let(:invalid_user_params) do
       {
         name: "test_name",
         password: "test123456"
       }
-    }
+    end
 
     it 'save user' do
       post users_path, params: { user: user_params }
@@ -131,14 +131,17 @@ RSpec.describe "Users", type: :request do
       sign_in_as(admin_user)
       delete user_path(test_user)
       expect(flash[:success]).to eq("User deleted")
-      expect(subject).to redirect_to users_url
+      expect(response).to redirect_to users_url
     end
   end
 
   describe '#following' do
+    before do
+      create(:relationship, follower_id: user.id, followed_id: user_a.id)
+    end
+
     let(:user) { create(:user, activated: true, activated_at: Time.zone.now) }
-    let(:user_1) { create(:user, activated: true, activated_at: Time.zone.now) }
-    let!(:relationship) { create(:relationship, follower_id: user.id, followed_id: user_1.id) }
+    let(:user_a) { create(:user, activated: true, activated_at: Time.zone.now) }
 
     it 'be successful' do
       sign_in_as(user)
