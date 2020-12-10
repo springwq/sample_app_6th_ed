@@ -89,7 +89,6 @@ RSpec.describe "Users", type: :request do
   end
 
   describe '#create' do
-    # TODO
     context "success" do
       
       it 'should return success' do 
@@ -115,7 +114,6 @@ RSpec.describe "Users", type: :request do
   
 
   describe '#destroy' do
-    # TODO
     let(:user_delete) { create(:user, activated: true, activated_at: Time.zone.now) }
 
     subject { delete user_path(user_delete)  }
