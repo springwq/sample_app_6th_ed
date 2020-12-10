@@ -66,10 +66,21 @@ RSpec.describe User, type: :model do
   end
 
   describe '#feed' do
-    let(:user) { create(:user) }
+    let!(:user) { create(:user) }
+    context "where no feed" do
+      
+      it 'should equal 0' do 
+        expect(user.feed.size).to eq(0)
+      end
+    end
     
-    it 'should equal 0' do 
-      expect(user.feed.size).to eq(0)
+    context "where 1 feed" do
+      let!(:user_1) { create(:user) }
+      let!(:micropost) { create(:micropost, user_id: user_1.id, content: "test1") }
+      
+      it "should equal 1" do
+        expect(user_1.feed.size).to eq(1)
+      end
     end
   end
 end

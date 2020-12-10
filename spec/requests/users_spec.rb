@@ -89,7 +89,7 @@ RSpec.describe "Users", type: :request do
   end
 
   describe '#create' do
-    context "success" do
+    context "where create success" do
       
       it 'should return success' do 
         post users_path, params: { user: {
@@ -101,7 +101,7 @@ RSpec.describe "Users", type: :request do
       end
     end
     
-    context "fail" do
+    context "where create fail" do
       it 'should return fail' do 
         post users_path, params: { user: {
           name: "test",
@@ -126,7 +126,6 @@ RSpec.describe "Users", type: :request do
   end
 
   describe '#following' do
-    # TODO
     let(:user) { create(:user, activated: true, activated_at: Time.zone.now) }
     let(:user_following) { create(:user, activated: true, activated_at: Time.zone.now) }
 
