@@ -46,6 +46,7 @@ group :test do
   gem 'cucumber-rails',           '2.2.0', require: false
   gem 'database_cleaner-active_record', '1.8.0'
   gem 'launchy',                  '2.5.0'
+  gem 'shoulda-matchers',         '4.4.1'
 end
 
 group :production do
