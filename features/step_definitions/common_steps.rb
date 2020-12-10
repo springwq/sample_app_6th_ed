@@ -10,3 +10,28 @@ end
 Then(/^(?:|I )should see "([^"]*)"$/) do |text|
   expect(page).to have_content(text)
 end
+
+When ('I visit home page') do 
+  visit root_path
+end
+
+When ('I visit following page') do 
+  visit following_user_path(@user)
+end
+
+When ("I fill {string} into the {string} field") do |text, field|
+  fill_in field, :with => text
+end
+
+And 'I click on element {string}' do |selector|
+  find(selector).click
+end
+
+Then(/^(?:|I )should not see "([^"]*)"$/) do |text|
+  expect(page).to have_no_content(text)
+end
+
+When /^I click on the "([^"]*)" link$/ do |link|
+  click_link link
+end
+
