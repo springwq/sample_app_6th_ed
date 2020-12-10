@@ -1,0 +1,7 @@
+development:
+  DATABASE_USER: ''
+  DATABASE_PASSWORD: ''
+
+test:
+  DATABASE_USER: ''
+  DATABASE_PASSWORD: ''

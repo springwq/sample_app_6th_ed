@@ -17,3 +17,15 @@ RSpec/MultipleExpectations:
 
 Metrics/BlockLength:
   Enabled: false
+
+Bundler/OrderedGems:
+  Enabled: false
+
+Style/Documentation:
+  Enabled: false
+
+Style/SymbolArray:
+  Enabled: false
+
+Layout/ExtraSpacing:
+  Enabled: false

@@ -5,27 +5,17 @@ RSpec.describe User, type: :model do
     expect(create(:user)).to be_valid
   end
 
-  context 'when name is not present' do
-    let(:user) { described_class.new(email: Faker::Internet.email, password: described_class.digest('password')) }
-
-    it 'is inivalid' do
-      expect(user.valid?).to be false
-    end
-
-    it 'is failed to save' do
-      expect(user.save).to be false
-    end
+  describe 'associations' do
+    it { is_expected.to have_many(:microposts).dependent(:destroy) }
+    it { is_expected.to have_many(:active_relationships).with_foreign_key('follower_id').class_name('Relationship').dependent(:destroy)  }
+    it { is_expected.to have_many(:passive_relationships).with_foreign_key('followed_id').class_name('Relationship').dependent(:destroy)  }
+    it { is_expected.to have_many(:following).through(:active_relationships).source(:followed) }
+    it { is_expected.to have_many(:followers).through(:passive_relationships).source(:follower) }
   end
 
-  describe "#validates" do
-
-    context 'validates nil name' do 
-      let(:user_nil_name) { User.new(name: 'test_name', password: 'test_password', email: 'test_email@test.com') }
-
-      it 'should return false with nil name' do 
-        result = user_nil_name.save
-        expect(result).to be false
-      end
-    end
+  describe 'validations' do
+    it { is_expected.to validate_presence_of(:name)}
+    it { is_expected.to validate_presence_of(:email) }
+    it { is_expected.to validate_presence_of(:password) }
   end
 end
