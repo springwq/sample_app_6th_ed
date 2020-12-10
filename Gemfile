@@ -48,6 +48,7 @@ group :test do
   gem 'database_cleaner-active_record', '1.8.0'
   gem 'launchy',                  '2.5.0'
   gem 'shoulda-matchers',         '4.4.1'
+  gem 'rspec_junit_formatter',    '0.4.1'
 end
 
 group :production do
