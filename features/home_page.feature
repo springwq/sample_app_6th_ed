@@ -7,3 +7,8 @@ Feature: Users
     Then I should see "Compose new micropost" textare
     When I create a new micropost
     Then I should see the new micropost from "Micropost Feed"
+
+  Scenario: User can destroy owned microposts
+
+
+  Scenario: User can see microposts from followed users
