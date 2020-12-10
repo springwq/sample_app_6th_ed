@@ -17,9 +17,43 @@ RSpec.describe User, type: :model do
     end
   end
 
-  # TODO: Add tests for associations
+  describe "#validates" do
+    
+    context 'validates nil name' do 
+      let(:user_nil_name) { User.new(name: '', password: 'test_password', email: 'test_email@test.com') }
 
-  # TODO: Add tests for validations
+      it 'should return false with nil name' do 
+        result = user_nil_name.save
+        expect(result).to be false
+      end
+    end
+    
+    context 'validates nil password' do 
+      let(:user_nil_password) { User.new(name: 'test_user_name', password: '', email: 'test_email@test.com') }
+      
+      it 'should return false with nil password' do 
+        result = user_nil_password.save
+        expect(result).to be false
+      end
+    end
+
+    context 'validates nil password' do 
+      let(:user_nil_email) { User.new(name: 'test_user_name', password: 'test_password', email: '') }
+      it 'should return false with nil email' do 
+        result = user_nil_email.save
+        expect(result).to be false
+      end
+    end
+
+    context 'validates exists email' do 
+      let!(:user) { create(:user, email: "test_email@126.com") }
+      let(:new_user) { User.new(email: "test_email@126.com", password: SecureRandom.hex(4), name: SecureRandom.hex(3)) }
+      it 'should return errors' do 
+        result = new_user.save
+        expect(result).to be false
+      end
+    end
+  end
 
   describe '#send_password_reset_email' do
     let(:user) { User.new(name: "circle", email: "circle@feedmob.com", password: "123456") }
@@ -36,10 +70,6 @@ RSpec.describe User, type: :model do
     
     it 'should equal 0' do 
       expect(user.feed.size).to eq(0)
-    end
-    
-    context "micopost " do
-      
     end
   end
 end
