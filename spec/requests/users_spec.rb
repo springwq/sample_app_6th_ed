@@ -66,4 +66,67 @@ RSpec.describe "Users", type: :request do
       end
     end
   end
+
+  describe '#show' do 
+    before do
+      @user = create(:user, activated: true, activated_at: Time.zone.now)
+      sign_in_as(@user)
+    end
+
+    subject { get user_path(@user) }
+
+    it 'should get user success' do 
+      subject
+      expect(response).to have_http_status(200)
+      expect(@user.microposts.reload.size).to eq(0)
+    end
+  end
+
+  describe '#create' do
+    context "where create success" do
+      
+      it 'should return success' do 
+        post users_path, params: { user: {
+          name: "test",
+          password: "123123",
+          email: "test@email.com"
+        } }
+        expect(response).to have_http_status(302)
+      end
+    end
+    
+    context "where create fail" do
+      it 'should return fail' do 
+        post users_path, params: { user: {
+          name: "test",
+          password: "123123"
+        } }
+        expect(subject).to render_template(:new)
+      end
+    end
+  end
+  
+
+  describe '#destroy' do
+    let(:user_delete) { create(:user, activated: true, activated_at: Time.zone.now) }
+
+    subject { delete user_path(user_delete)  }
+
+    it 'should return success' do 
+      sign_in_as(user_delete)
+      subject
+      expect(flash[:success]).to eq("User deleted")
+    end
+  end
+
+  describe '#following' do
+    let(:user) { create(:user, activated: true, activated_at: Time.zone.now) }
+    let(:user_following) { create(:user, activated: true, activated_at: Time.zone.now) }
+
+    it 'should be successful' do 
+      sign_in_as(user)
+      get following_user_path(user)
+      expect(response).to render_template "show_follow"
+    end
+  end
 end
