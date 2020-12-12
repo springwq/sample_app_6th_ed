@@ -14,8 +14,39 @@ RSpec.describe User, type: :model do
   end
 
   describe 'validations' do
-    it { is_expected.to validate_presence_of(:name)}
+    it { is_expected.to validate_presence_of(:name) }
     it { is_expected.to validate_presence_of(:email) }
     it { is_expected.to validate_presence_of(:password) }
+  end
+
+  describe '#feed' do
+    let(:user) { create(:user) }
+
+    it 'return []' do
+      expect(user.feed.any?).to equal(false)
+    end
+
+    context "when user have micopost" do
+      let(:user) { create(:user) }
+      let(:followed_user) { create(:user) }
+
+      before do
+        create(:relationship, follower_id: user.id, followed_id: followed_user.id)
+        create(:micropost, user_id: user.id, content: "test")
+      end
+
+      it 'get feed' do
+        expect(user.feed.any?).to eq true
+      end
+    end
+  end
+
+  describe '#send_password_reset_email' do
+    let(:user) { described_class.new(email: Faker::Internet.email, password: SecureRandom.hex(6), name: Faker::Name.name) }
+
+    it 'save success' do
+      allow(UserMailer).to receive_message_chain(:password_reset, :deliver_now)
+      expect(user.save).to be true
+    end
   end
 end
