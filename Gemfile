@@ -21,6 +21,7 @@ gem 'rubocop-rspec',              '2.0.1', require: false
 gem 'pg',                         '0.21.0'
 gem "figaro",                     '1.2.0'
 
+
 group :development, :test do
   gem 'byebug',            '11.1.3', platforms: [:mri, :mingw, :x64_mingw]
   gem 'pry-rails'
@@ -49,6 +50,7 @@ group :test do
   gem 'launchy',                  '2.5.0'
   gem 'shoulda-matchers',         '4.4.1'
   gem 'rspec_junit_formatter',    '0.4.1'
+  gem "cuprite"
 end
 
 group :production do
