@@ -21,9 +21,9 @@ API： https://apidock.com/rails/ActionView/Helpers/FormTagHelper/form_tag
 
 %>
 
-<%= form_tag('/issues', methods: :post) do %>
- Issue Title: <%= text_field_tag :title %><br />
-  Issue Content : <%= text_area_tag :content %><br />
+<%= form_tag('/issues', methods: :post, remote: true) do %>
+ Issue Title: <%= text_field_tag "issue[title]" %><br />
+  Issue Content : <%= text_area_tag "issue[content]" %><br />
 
  
   <input type ="submit" value ="Commit"/>

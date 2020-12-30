@@ -14,7 +14,10 @@ class IssuesController < ApplicationController
     # @issue = Issue.new({title: params[:title], content: params[:content]})
 
     @issue = Issue.new(issue_params)
+    Rails.logger.info("==============#{params[:issue]}")
+    Rails.logger.info("==============#{params[:issue][:title_111]}")
     if @issue.save
+      Rails.logger.info("==============#{issue_params[:title_111]}")
       respond_to do |format|
         format.html { redirect_to issues_path }
         format.js
@@ -28,6 +31,7 @@ class IssuesController < ApplicationController
 
   def update
     if @issue.update(issue_params)
+     
       respond_to do |format|
         format.html { redirect_to issues_path }
         format.js

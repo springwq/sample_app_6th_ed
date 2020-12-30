@@ -22,7 +22,7 @@ form_for（@user）＃如果这个@user是全新的话会往user＃create去
 
 %>
 
-<%= form_for @issue, remote: true do |f| %>
+<%= form_for @issue, remote: true, html: {id: "", class: ""} do |f| %>
   Issue Title: <%= f.text_field :title %><br />
   Issue Content : <%= f.text_area :content %><br />
   <%= f.submit "submit" %>
