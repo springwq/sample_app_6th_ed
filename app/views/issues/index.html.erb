@@ -1,0 +1,12 @@
+<%= link_to "New", new_issue_path%>
+<div style="margin-bottom: 20px; margin-top: 20px">
+  <% @issues.each do |issue| %>
+    <div style="margin-bottom: 20px; margin-top: 20px; border-bottom: 1px solid #ccc;">
+      <span style="margin-right: 20px;">
+        <%= issue.id %> -- <%= issue.title %> -- <%= issue.content%>
+      </span>
+      <%= link_to "Edit", edit_issue_path(issue)%>
+      <%= link_to "Destroy", issue_path(issue), method: :delete%>
+    </div>
+  <% end %>
+</div>

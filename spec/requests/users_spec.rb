@@ -66,4 +66,88 @@ RSpec.describe "Users", type: :request do
       end
     end
   end
+
+  describe '#show' do
+    let(:user) { create(:user, activated: true, activated_at: Time.zone.now) }
+
+    before do
+      @micropost = create(:micropost, user_id: user.id, content: "test1")
+    end
+
+    it 'get user success' do
+      sign_in_as(user)
+
+      get users_path(user)
+
+      expect(response).to have_http_status(:ok)
+      expect(user.microposts.reload.size).to eq(1)
+    end
+  end
+
+  describe '#create' do
+    let(:user_params) do
+      {
+        name: "test_name",
+        email: "test_email@126.com",
+        password: "test123456"
+      }
+    end
+
+    let(:invalid_user_params) do
+      {
+        name: "test_name",
+        password: "test123456"
+      }
+    end
+
+    it 'save user' do
+      post users_path, params: { user: user_params }
+      expect(flash[:info]).to eq("Please check your email to activate your account.")
+      expect(response).to have_http_status(:found)
+    end
+
+    it 'render new' do
+      post users_path, params: { user: invalid_user_params }
+      expect(response).to render_template :new
+    end
+  end
+
+  describe '#destroy' do
+    let(:test_user) { create(:user, activated: true, activated_at: Time.zone.now) }
+    let(:admin_user) { create(:user, activated: true, admin: true, activated_at: Time.zone.now) }
+
+    it 'redirect to login ' do
+      delete user_path(test_user)
+      expect(response).to redirect_to login_path
+    end
+
+    it 'redirect to root_path ' do
+      sign_in_as(test_user)
+      delete user_path(test_user)
+      expect(response).to redirect_to root_path
+    end
+
+    it 'return success' do
+      sign_in_as(admin_user)
+      delete user_path(test_user)
+      expect(flash[:success]).to eq("User deleted")
+      expect(response).to redirect_to users_url
+    end
+  end
+
+  describe '#following' do
+    before do
+      create(:relationship, follower_id: user.id, followed_id: user_a.id)
+    end
+
+    let(:user) { create(:user, activated: true, activated_at: Time.zone.now) }
+    let(:user_a) { create(:user, activated: true, activated_at: Time.zone.now) }
+
+    it 'be successful' do
+      sign_in_as(user)
+      get following_user_path(user)
+      expect(assigns(:users).size).to eq(1)
+      expect(response).to render_template "show_follow"
+    end
+  end
 end

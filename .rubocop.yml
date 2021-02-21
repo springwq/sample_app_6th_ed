@@ -17,6 +17,12 @@ RSpec/MultipleExpectations:
 
 Metrics/BlockLength:
   Enabled: false
+  
+Layout/LineLength: 
+  Enabled: false
+
+RSpec/MessageChain: 
+  Enabled: false
 
 Bundler/OrderedGems:
   Enabled: false

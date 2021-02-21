@@ -1,0 +1,30 @@
+<%# 
+参考文章： https://medium.com/%E5%BB%A2%E7%89%A9%E5%88%B0%E5%B7%A5%E7%A8%8B%E5%B8%AB%E7%9A%84%E9%80%B2%E5%8C%96%E9%81%8E%E7%A8%8B/rails-form-for-vs-form-tag-vs-form-with-%E7%9A%84%E5%B7%AE%E5%88%A5-ee936e2fe73
+API： https://apidock.com/rails/ActionView/Helpers/FormTagHelper/form_tag
+
+1. form_for：不会猜的表单，较基本的rails表单
+（1） 不太会像form_for那样自动去猜测你的目的，不用基于model也可以操作
+<form accept-charset ="UTF-8" action ="/search" method ="get">
+  <input name="utf8" type="hidden" value="＆＃x2713;"/>
+  <label for="q">搜索：</ label>
+  <input id ="q" name ="q" type ="text"/>
+  <input name ="commit" type ="submit"value ="Search"/>
+</ form>
+
+内部input一般是使用tag类型的：text_field_tag
+
+（2） 用form_tag送出的params里面会不包含表单的内容， params[:字段名]，
+如果需要使用 为 params: { model名: {...}}，可以修改 input 的name为 'model[params]', 如下述的:
+  text_field_tag "issue[title]"
+  text_area_tag "issue[content]"
+(3) 默认是发送html请求，如果需要使用ajax，需添加 remote: true
+
+%>
+
+<%= form_tag('/issues', methods: :post, remote: true) do %>
+ Issue Title: <%= text_field_tag "issue[title]" %><br />
+  Issue Content : <%= text_area_tag "issue[content]" %><br />
+
+ 
+  <input type ="submit" value ="Commit"/>
+<% end %>
